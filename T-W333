@@ -1816,8 +1816,8 @@ makeutilbutton("Kill All").MouseButton1Click:Connect(function()
 	loadstring(game:HttpGet('https://raw.githubusercontent.com/DigitalityScripts/roblox-scripts/main/Kill%20All'))()
 end)
 
-makeutilbutton("Bring all soon").MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet('https://raw.githubusercontent.com/DigitalityScripts/roblox-scripts/main/Bring%20All'))()
+makeutilbutton("Bring all").MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/wanted333ss/bring-all/main/bring'))()
 end)
 
 makeutilbutton("Loop Fling All").MouseButton1Click:Connect(function()
