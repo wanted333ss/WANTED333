@@ -3,7 +3,7 @@
 ]]
 
 local args = {
-    [1] = "|R.i.p WANTED³³³|",
+    [1] = "|script old team WANTED333 :(|",
     [2] = "All"
 }
 
@@ -13,7 +13,7 @@ game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageReque
 
 
 
---local args = {
+local args = {
     [1] = "Script WANTED333 V0.2",
     [2] = "All"
 }
