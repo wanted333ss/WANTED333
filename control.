@@ -1,0 +1,826 @@
+--credits: Snip#3132
+-- Editted By Creo ^ Credits to creator above
+--Commands: move forward, -move backward, -move leftward, -move rightward, -shiftlock on, -shiftlock off, -stop moving, -dance, -dance1, -dance2, -dance3, -wave, -point, -laugh, -jump, -joke
+local keys = {
+ ["a"] = 0x41,
+ ["b"] = 0x42,
+ ["c"] = 0x43,
+ ["d"] = 0x44,
+ ["e"] = 0x45,
+ ["f"] = 0x46,
+ ["g"] = 0x47,
+ ["h"] = 0x48,
+ ["i"] = 0x49,
+ ["j"] = 0x4A,
+ ["k"] = 0x4B,
+ ["l"] = 0x4C,
+ ["m"] = 0x4D,
+ ["n"] = 0x4E,
+ ["o"] = 0x4F,
+ ["p"] = 0x50,
+ ["q"] = 0x51,
+ ["r"] = 0x52,
+ ["s"] = 0x53,
+ ["t"] = 0x54,
+ ["u"] = 0x55,
+ ["v"] = 0x56,
+ ["w"] = 0x57,
+ ["x"] = 0x58,
+ ["y"] = 0x59,
+ ["z"] = 0x5A,
+ ["0"] = 0x30,
+ ["1"] = 0x31,
+ ["2"] = 0x32,
+ ["3"] = 0x33,
+ ["4"] = 0x34,
+ ["5"] = 0x35,
+ ["6"] = 0x36,
+ ["7"] = 0x37,
+ ["8"] = 0x38,
+ ["9"] = 0x39,
+ ["+"] = 0xBB,
+ ["-"] = 0xBD,
+ [","] = 0xBC,
+ ["."] = 0xBE,
+ ["quote"] = 0xDE,
+ ["esc"] = 0x1B,
+ ["tab"] = 0x09,
+ ["caps"] = 0x14,
+ ["lshift"] = 0xA0,
+ ["rshift"] = 0xA1,
+ ["ctrl"] = 0x11,
+ ["lctrl"] = 0xA2,
+ ["rctrl"] = 0xA3,
+ ["lwin"] = 0x5B,
+ ["rwin"] = 0x5C,
+ ["alt"] = 0x12,
+ ["space"] = 0x20,
+ ["enter"] = 0x0D,
+ ["backspace"] = 0x08,
+ ["sshot"] = 0x2C,
+ ["scrolllock"] = 0x91,
+ ["pause"] = 0x13,
+ ["insert"] = 0x2D,
+ ["home"] = 0x24,
+ ["pgup"] = 0x21,
+ ["del"] = 0x2E,
+ ["end"] = 0x23,
+ ["pgdn"] = 0x22,
+ ["up_a"] = 0x26,
+ ["down_a"] = 0x28,
+ ["left_a"] = 0x25,
+ ["right_a"] = 0x27,
+ ["numlock"] = 0x90,
+ ["sleep"] = 0x5F,
+ ["n_0"] = 0x60,
+ ["n_1"] = 0x61,
+ ["n_2"] = 0x62,
+ ["n_3"] = 0x63,
+ ["n_4"] = 0x64,
+ ["n_5"] = 0x65,
+ ["n_6"] = 0x66,
+ ["n_7"] = 0x67,
+ ["n_8"] = 0x68,
+ ["n_9"] = 0x69,
+ ["v_mute"] = 0xAD,
+ ["v_up"] = 0xAF,
+ ["v_down"] = 0xAE,
+ ["next_t"] = 0xB0,
+ ["prev_t"] = 0xB1,
+ ["stop_t"] = 0xB2,
+ ["pause_t"] = 0xB3,
+ ["f1"] = 0x70,
+ ["f2"] = 0x71,
+ ["f3"] = 0x72,
+ ["f4"] = 0x73,
+ ["f5"] = 0x74,
+ ["f6"] = 0x75,
+ ["f7"] = 0x76,
+ ["f8"] = 0x77,
+ ["f9"] = 0x78,
+ ["f10"] = 0x79,
+ ["f11"] = 0x7A,
+ ["f12"] = 0x7B,
+}
+
+function hold(mousebutton)
+ if mousebutton == "left" then
+  mouse1down()
+ elseif mousebutton == "right" then
+  mouse2down()
+ end
+end
+
+function release(mousebutton)
+ if mousebutton == "left" then
+  mouse1up()
+ elseif mousebutton == "right" then
+  mouse2up()
+ end
+end
+
+function click(mousebutton)
+ if mousebutton == "left" then
+  mouse1click()
+ elseif mousebutton == "right" then
+  mouse2click()
+ end
+end
+
+function move(x,y)
+ mousemoveabs(x,y)
+end
+
+function scroll(p)
+ mousescroll(p)
+end
+
+function loopmove(x,y)
+ if canmove2 ~= false then
+  canmove1 = false
+  spawn(function()
+   local l
+   l = game:GetService("RunService").Heartbeat:Connect(function()
+    if canmove1 == true then
+     l:Disconnect()
+    end
+    wait()
+    move(x,y)
+   end)
+  end)
+ end
+end
+
+function breakmove()
+ canmove1 = false
+end
+
+local mouse = game:GetService("Players").LocalPlayer:GetMouse()
+canmove2 = true
+function togglemove()
+ if canmove1 ~= false then
+  if canmove2 == false then
+   canmove2 = true
+  elseif canmove2 == true then
+   canmove2 = false
+   mx = mouse.X
+   my = mouse.Y
+   spawn(function()
+    local l
+    l = game:GetService("RunService").Heartbeat:Connect(function()
+     if canmove2 == true then
+      l:Disconnect()
+     end
+     wait()
+     move(mx,my)
+    end)
+   end)
+  end
+ end
+end
+
+function type(string)
+ for _,char in pairs(string:split("")) do
+  wait(0.01)
+  if char == " " then
+   keypress(keys["space"])
+  else
+   if char:upper() == char and (char ~= "," and char ~= "." and char ~= "-" and char ~= "+" and char ~= "'" and char ~= '"' and char ~= "&lt;" and char ~= ">" and char ~= "_" and char ~= "=") then
+    keypress(keys["lshift"])
+    keypress(keys[char:lower()])
+                keyrelease(keys["lshift"])
+   else
+    if char == "'" then
+     keyrelease(keys["caps"])
+     keyrelease(keys["lshift"])
+     keypress(keys["quote"])
+    elseif char == '"' then
+     keyrelease(keys["caps"])
+     keypress(keys["lshift"])
+     keypress(keys["quote"])
+     keyrelease(keys["lshift"])
+    elseif char == "&lt;" then
+     keyrelease(keys["caps"])
+     keypress(keys["lshift"])
+     keypress(keys[","])
+     keyrelease(keys["lshift"])
+    elseif char == ">" then
+     keyrelease(keys["caps"])
+     keypress(keys["lshift"])
+     keypress(keys["."])
+     keyrelease(keys["lshift"])
+    elseif char == "_" then
+     keyrelease(keys["caps"])
+     keypress(keys["lshift"])
+     keypress(keys["-"])
+     keyrelease(keys["lshift"])
+    elseif char == "=" then
+     keyrelease(keys["caps"])
+     keypress(keys["lshift"])
+     keypress(keys["+"])
+     keyrelease(keys["lshift"])
+    else
+     keyrelease(keys["caps"])
+     keyrelease(keys["lshift"])
+     keypress(keys[char])
+    end
+   end
+  end
+ end
+end
+
+
+
+local chatEvents = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents")
+local messageDoneFiltering = chatEvents:WaitForChild("OnMessageDoneFiltering")
+
+messageDoneFiltering.OnClientEvent:Connect(function(message)
+ local msg = message.Message or ""
+ 
+ 
+ 
+ print(msg)
+  if msg:lower():sub(1,13) == "-move forward" then
+   keyrelease(keys["s"])
+   keypress(keys["w"])
+  end
+
+  if msg:lower():sub(1,14) == "-move backward" then
+   keyrelease(keys["w"])
+   keypress(keys["s"])
+  end
+
+  if msg:lower():sub(1,14) == "-move leftward" then
+   keyrelease(keys["d"])
+   keypress(keys["a"])
+  end
+
+  if msg:lower():sub(1,15) == "-move rightward" then
+   keyrelease(keys["a"])
+   keypress(keys["d"])
+  end
+
+  if msg:lower():sub(1,13) == "-shiftlock on" then
+   keypress(keys["lshift"])
+   keyrelease(keys["lshift"])
+  end
+
+  if msg:lower():sub(1,14) == "-shiftlock off" then
+   keypress(keys["lshift"])
+   keyrelease(keys["lshift"])
+  end
+
+  if msg:lower():sub(1,12) == "-stop moving" then
+   keyrelease(keys["w"])
+   keyrelease(keys["s"])
+   keyrelease(keys["a"])
+   keyrelease(keys["d"])
+  end
+
+  if msg:lower():sub(1,5) == "-wave" then
+   game.Players:Chat("/e wave")
+  end
+
+  if msg:lower():sub(1,6) == "-point" then
+   game.Players:Chat("/e point")
+  end
+
+  if msg:lower():sub(1,6) == "-laugh" then
+   game.Players:Chat("/e laugh")
+  end
+
+  if msg:lower():sub(1,6) == "-dance" then
+   game.Players:Chat("/e dance")
+  end
+
+  if msg:lower():sub(1,7) == "-dance1" then
+   game.Players:Chat("/e dance1")
+  end
+
+  if msg:lower():sub(1,7) == "-dance2" then
+   game.Players:Chat("/e dance2")
+  end
+
+  if msg:lower():sub(1,7) == "-dance3" then
+   game.Players:Chat("/e dance3")
+  end
+
+  if msg:lower():sub(1,12) == "-rotate left" then
+   keyrelease(keys["right_a"])
+   keypress(keys["left_a"])
+  end
+
+  if msg:lower():sub(1,13) == "-rotate right" then
+   keyrelease(keys["left_a"])
+   keypress(keys["right_a"])
+  end
+
+  if msg:lower():sub(1,12) == "-rotate stop" then
+   keyrelease(keys["right_a"])
+   keyrelease(keys["left_a"])
+  end
+
+  if msg:lower():sub(1,5) == "-jump" then
+   keypress(keys["space"])
+   wait(0.1)
+   keyrelease(keys["space"])
+  end
+ 
+
+  if msg:lower():sub(1,5) == "-kill" then
+game.Players.LocalPlayer.Character:BreakJoints()
+end
+
+
+
+if msg:lower():sub(1,5) == "-sit" then
+game. Players.LocalPlayer.Character.Humanoid. Sit = true
+
+end
+
+-----------------
+if msg:lower():sub(1,5) == "-xpo" then
+    -- FE SUS 2? ðŸ˜³
+for i,v in next, game:GetService("Players").LocalPlayer.Character:GetDescendants() do
+    if v:IsA("BasePart") and v.Name ~="HumanoidRootPart" then 
+    game:GetService("RunService").Heartbeat:connect(function()
+    v.Velocity = Vector3.new(-30,0,0)
+    end)
+    end
+    end
+    
+    game:GetService("StarterGui"):SetCore("SendNotification", { 
+        Title = "xWANTED";
+        Text = "JUST FUCKING YOU";
+        Icon = "rbxthumb://type=Asset&id=5107182114&w=150&h=150"})
+    Duration = 16;
+    wait(0.1)
+HumanDied = false
+local CountSCIFIMOVIELOL = 1
+function SCIFIMOVIELOL(Part0,Part1,Position,Angle)
+	local AlignPos = Instance.new('AlignPosition', Part1); AlignPos.Name = "AliP_"..CountSCIFIMOVIELOL
+	AlignPos.ApplyAtCenterOfMass = true;
+	AlignPos.MaxForce = 5772000--67752;
+	AlignPos.MaxVelocity = math.huge/9e110;
+	AlignPos.ReactionForceEnabled = false;
+	AlignPos.Responsiveness = 200;
+	AlignPos.RigidityEnabled = false;
+	local AlignOri = Instance.new('AlignOrientation', Part1); AlignOri.Name = "AliO_"..CountSCIFIMOVIELOL
+	AlignOri.MaxAngularVelocity = math.huge/9e110;
+	AlignOri.MaxTorque = 5772000
+	AlignOri.PrimaryAxisOnly = false;
+	AlignOri.ReactionTorqueEnabled = false;
+	AlignOri.Responsiveness = 200;
+	AlignOri.RigidityEnabled = false;
+	local AttachmentA=Instance.new('Attachment',Part1); AttachmentA.Name = "Ath_"..CountSCIFIMOVIELOL
+	local AttachmentB=Instance.new('Attachment',Part0); AttachmentB.Name = "Ath_"..CountSCIFIMOVIELOL
+	AttachmentA.Orientation = Angle or Vector3.new(0,0,0)
+	AttachmentA.Position = Position or Vector3.new(0,0,0)
+	AlignPos.Attachment1 = AttachmentA;
+	AlignPos.Attachment0 = AttachmentB;
+	AlignOri.Attachment1 = AttachmentA;
+	AlignOri.Attachment0 = AttachmentB;
+	CountSCIFIMOVIELOL = CountSCIFIMOVIELOL + 1
+	return {AlignPos,AlignOri,AttachmentA,AttachmentB}
+end
+
+if _G.netted ~= true then
+	_G.netted = true
+	coroutine.wrap(function()
+		settings().Physics.PhysicsEnvironmentalThrottle = Enum.EnviromentalPhysicsThrottle.Disabled
+		settings().Physics.AllowSleep = false
+		game:GetService("RunService").RenderStepped:Connect(function()
+			game:FindFirstChildOfClass("Players").LocalPlayer.MaximumSimulationRadius=math.pow(math.huge,math.huge)
+			sethiddenproperty(game:FindFirstChildOfClass("Players").LocalPlayer,"SimulationRadius",math.huge*math.huge)
+		end)
+	end)()
+end
+
+game:FindFirstChildOfClass("Players").LocalPlayer["Character"].Archivable = true
+local hatnameclone = {}
+for _,v in next, game:FindFirstChildOfClass("Players").LocalPlayer["Character"]:GetChildren() do
+	if v:IsA("Accessory") then
+		if hatnameclone[v.Name] then
+			if hatnameclone[v.Name] == "s" then
+				hatnameclone[v.Name] = {}
+			end
+			table.insert(hatnameclone[v.Name],v)
+		else
+			hatnameclone[v.Name] = "s"
+		end
+	end
+end
+for _,v in pairs(hatnameclone) do
+	if type(v) == "table" then
+		local num = 1
+		for _,w in pairs(v) do
+			w.Name = w.Name..num
+			num = num + 1
+		end
+	end
+end
+hatnameclone = nil
+
+local DeadChar = game:FindFirstChildOfClass("Players").LocalPlayer.Character
+
+local fldr = Instance.new("Folder",game:FindFirstChildOfClass("Players").LocalPlayer["Character"])
+fldr.Name = "DMYF"
+local CloneChar = DeadChar:Clone()
+local ANIMATIONHERE
+if CloneChar:FindFirstChild("Animate") then
+	ANIMATIONHERE = CloneChar:FindFirstChild("Animate"):Clone()
+	CloneChar:FindFirstChild("Animate"):Destroy()
+end
+if CloneChar:FindFirstChildOfClass("Folder") then CloneChar:FindFirstChildOfClass("Folder"):Destroy() end
+if CloneChar.Torso:FindFirstChild("Neck") then
+	local Clonessss = CloneChar.Torso:FindFirstChild("Neck"):Clone()
+	Clonessss.Part0 = nil
+	Clonessss.Part1 = DeadChar.Head
+	Clonessss.Parent = DeadChar.Torso
+end
+CloneChar.Parent = fldr
+CloneChar.HumanoidRootPart.CFrame = DeadChar.HumanoidRootPart.CFrame
+CloneChar.Humanoid.BreakJointsOnDeath = false
+CloneChar.Name = "non"
+CloneChar.Humanoid.DisplayDistanceType = "None"
+
+for _,v in next, DeadChar:GetChildren() do
+	if v:IsA("Accessory") then
+		local topacc = false
+		if v.Handle:FindFirstChildOfClass("Weld") then v.Handle:FindFirstChildOfClass("Weld"):Destroy() end
+		v.Handle.Massless = true
+		v.Handle.CanCollide = false
+		if v.Handle:FindFirstChildOfClass("Attachment") then
+			local ath__ = v.Handle:FindFirstChildOfClass("Attachment")
+			if ath__.Name == "HatAttachment" or ath__.Name == "HairAttachment" or ath__.Name == "FaceFrontAttachment" or ath__.Name == "FaceCenterAttachment" then
+				topacc = ath__.Name
+			end
+		end
+        local bv = Instance.new("BodyVelocity",v.Handle)
+		bv.Velocity = Vector3.new(0,0,0)
+		coroutine.wrap(function()
+			if topacc then
+				local allthings = SCIFIMOVIELOL(v.Handle,DeadChar.Torso,Vector3.new(0,1.5,0)+ (DeadChar.Head[topacc].Position + (v.Handle[topacc].Position*-1)),Vector3.new(0,0,0))
+				local normaltop = allthings[1].Attachment1
+				local alipos = allthings[1]
+				local alirot = allthings[2]
+				local p0 = v.Handle
+				local p1 = DeadChar.Head
+				alipos.Parent = CloneChar:FindFirstChild(v.Name).Handle
+				alirot.Parent = CloneChar:FindFirstChild(v.Name).Handle
+				while true do
+					game:GetService("RunService").RenderStepped:wait()
+					if HumanDied then break end
+					coroutine.wrap(function()
+						if alipos.Attachment1 == normaltop then
+							p0.CFrame = p0.CFrame:lerp((((DeadChar.Torso.CFrame * CFrame.new(0,1.5,0)) * p1[topacc].CFrame) * p0[topacc].CFrame:inverse()),1)
+						else
+							v.Handle.CFrame = v.Handle.CFrame:lerp(alipos.Attachment1.Parent.CFrame * CFrame.new(alipos.Attachment1.Position) * CFrame.Angles(math.rad(alipos.Attachment1.Rotation.X),math.rad(alipos.Attachment1.Rotation.Y),math.rad(alipos.Attachment1.Rotation.Z)),1)
+						end
+					end)()
+				end
+			else
+				SCIFIMOVIELOL(v.Handle,CloneChar[v.Name].Handle,Vector3.new(0,0,0),Vector3.new(0,0,0))
+			end
+		end)()
+    end
+end
+
+local a = DeadChar.Torso
+local b = DeadChar.HumanoidRootPart
+local c = DeadChar.Humanoid
+a.Parent = game:FindFirstChildOfClass("Workspace")
+c.Parent = game:FindFirstChildOfClass("Workspace")
+local told = a:Clone()
+local told1 = c:Clone()
+b["RootJoint"].Part0 = told
+b["RootJoint"].Part1 = DeadChar.Head
+a.Name = "torso"
+a.Neck:Destroy()
+c.Name = "Cloned Avatar"
+told.Parent = DeadChar
+told1.Parent = DeadChar
+DeadChar.PrimaryPart = told
+told1.Health = 0
+b:Destroy()
+a.Parent = DeadChar
+c.Parent = DeadChar
+told:Destroy()
+told1:Destroy()
+a.Name = "Torso"
+
+if CloneChar.Head:FindFirstChildOfClass("Decal") then CloneChar.Head:FindFirstChildOfClass("Decal").Transparency = 1 end
+if DeadChar:FindFirstChild("Animate") then DeadChar:FindFirstChild("Animate"):Destroy() end
+
+local Collider
+function UnCollide()
+    if HumanDied then Collider:Disconnect(); return end
+    --[[for _,Parts in next, CloneChar:GetChildren() do
+        if Parts:IsA("BasePart") then
+            Parts.CanCollide = false 
+        end 
+    end]]
+    for _,Parts in next, DeadChar:GetChildren() do
+        if Parts:IsA("BasePart") then
+        Parts.CanCollide = false
+        end 
+    end 
+end
+Collider = game:GetService("RunService").Stepped:Connect(UnCollide)
+
+local resetBindable = Instance.new("BindableEvent")
+resetBindable.Event:connect(function()
+    game:GetService("StarterGui"):SetCore("ResetButtonCallback", true)
+	resetBindable:Destroy()
+	HumanDied = true
+    pcall(function()
+		game:FindFirstChildOfClass("Players").LocalPlayer.Character = DeadChar
+		DeadChar.Head:Destroy()
+		DeadChar:FindFirstChildOfClass("Humanoid"):Destroy()
+		game:FindFirstChildOfClass("Players").LocalPlayer.Character = CloneChar
+		if DeadChar:FindFirstChildOfClass("Folder") then DeadChar:FindFirstChildOfClass("Folder"):Destroy() end
+	end)
+end)
+game:GetService("StarterGui"):SetCore("ResetButtonCallback", resetBindable)
+
+coroutine.wrap(function()
+    while true do
+        game:GetService("RunService").RenderStepped:wait()
+        if not CloneChar or not CloneChar:FindFirstChild("Head") or not CloneChar:FindFirstChildOfClass("Humanoid") or CloneChar:FindFirstChildOfClass("Humanoid").Health <= 0 and not DeadChar or not DeadChar:FindFirstChild("Head") or not DeadChar:FindFirstChildOfClass("Humanoid") or DeadChar:FindFirstChildOfClass("Humanoid").Health <= 0 then 
+            HumanDied = true
+            pcall(function()
+				game:FindFirstChildOfClass("Players").LocalPlayer.Character = DeadChar
+				DeadChar.Head:Destroy()
+				DeadChar:FindFirstChildOfClass("Humanoid"):Destroy()
+				game:FindFirstChildOfClass("Players").LocalPlayer.Character = CloneChar
+				if DeadChar:FindFirstChildOfClass("Folder") then DeadChar:FindFirstChildOfClass("Folder"):Destroy() end
+			end)
+            if resetBindable then
+                game:GetService("StarterGui"):SetCore("ResetButtonCallback", true)
+                resetBindable:Destroy()
+            end
+            break
+        end		
+    end
+end)()
+
+
+SCIFIMOVIELOL(DeadChar["Head"],CloneChar["Head"])
+SCIFIMOVIELOL(DeadChar["Torso"],CloneChar["Torso"])
+SCIFIMOVIELOL(DeadChar["Left Arm"],CloneChar["Left Arm"])
+SCIFIMOVIELOL(DeadChar["Right Arm"],CloneChar["Right Arm"])
+SCIFIMOVIELOL(DeadChar["Left Leg"],CloneChar["Left Leg"])
+SCIFIMOVIELOL(DeadChar["Right Leg"],CloneChar["Right Leg"])
+
+for _,v in pairs(DeadChar:GetChildren()) do
+	if v:IsA("BasePart") and v.Name ~= "Head" then
+		--[[local bv = Instance.new("BodyVelocity",v)
+		bv.Velocity = Vector3.new(0,0,0)
+		coroutine.wrap(function()
+			while true do
+				game:GetService("RunService").RenderStepped:wait()
+				if HumanDied then break end
+				v.CFrame = CloneChar[v.Name].CFrame
+			end
+		end)()]]
+	elseif v:IsA("BasePart") and v.Name == "Head" then
+		local bv = Instance.new("BodyVelocity",v)
+		bv.Velocity = Vector3.new(0,0,0)
+		coroutine.wrap(function()
+			while true do
+				game:GetService("RunService").RenderStepped:wait()
+				if HumanDied then break end
+				v.CFrame = DeadChar.Torso.CFrame * CFrame.new(0,1.5,0)
+			end
+		end)()
+	end
+end
+
+for _,BodyParts in next, CloneChar:GetDescendants() do
+if BodyParts:IsA("BasePart") or BodyParts:IsA("Part") then
+BodyParts.Transparency = 1 end end
+game:GetService("RunService").RenderStepped:wait()
+game:FindFirstChildOfClass("Players").LocalPlayer.Character = CloneChar
+game:FindFirstChildOfClass("Workspace"):FindFirstChildOfClass("Camera").CameraSubject = CloneChar.Humanoid
+
+for _,v in next, DeadChar:GetChildren() do
+	if v:IsA("Accessory") then
+		if v.Handle:FindFirstChildOfClass("Weld") then v.Handle:FindFirstChildOfClass("Weld"):Destroy() end
+	end
+end
+
+if ANIMATIONHERE then ANIMATIONHERE.Parent = CloneChar end
+
+
+
+local playing = false
+local rtrnv;
+local c;
+local tbl3;
+local v;
+local anim;
+local count;
+local hhhh;
+local asdf;
+local s;
+local animid;
+local plr;
+local char;
+local cframe;
+local torso;
+local rs;
+local ls;
+local rh;
+local lh;
+local n;
+local rj;
+local rsc0;
+local lsc0;
+local rhc0;
+local lhc0;
+local rjc0;
+local nc0;
+local gc0;
+local orsc0;
+local olsc0;
+local orhc0;
+local olhc0;
+local orjc0;
+local onc0;
+local count2;
+local maxcount2;
+
+local function getnext(tbl,number)
+	c=100
+	rtrnv=0
+	for i,v in pairs(tbl) do
+		if i>number and i-number<c then
+			c=i-number
+			rtrnv=i
+		end
+	end
+	return(rtrnv)
+end
+local function wait2(tim)
+	if tim<0.1 then
+		game:GetService("RunService").Heartbeat:Wait()
+	else
+		for i=1,tim*40 do
+			game:GetService("RunService").Heartbeat:Wait()
+		end
+	end
+end
+local function kftotbl(kf) -- Below this is PAIN
+tbl3 = {}
+	for i,v in pairs(kf:GetDescendants()) do
+		if v:IsA("Pose") then
+			tbl3[string.sub(v.Name,1,1)..string.sub(v.Name,#v.Name,#v.Name)] = v.CFrame
+		end
+	end
+	return(tbl3)
+end
+        
+        if playanother == true then
+				playanother = false
+			end
+			playing = false
+			s = Instance.new("Sound", game:GetService("Players").LocalPlayer.Character.Torso)
+
+				s.SoundId = "rbxassetid://0"
+
+			s.Looped = false
+			s.Playing = false
+			wait(.1) -- Do not change because changing it will break.
+			animid="rbxassetid://4966886065"
+			plr = game.Players.LocalPlayer
+			char = game:GetService("Players").LocalPlayer.Character
+			if _G.permadeath == true then
+				char = workspace.non
+			end
+			cframe = char.HumanoidRootPart.CFrame
+			torso = char.Torso
+			-----------------------------------------------------------
+			rs = torso["Right Shoulder"] -- Just took this from another script(Faster).
+			ls = torso["Left Shoulder"]
+			rh = torso["Right Hip"]
+			lh = torso["Left Hip"]
+			n = torso["Neck"]
+			rj = char.HumanoidRootPart["RootJoint"]
+			rsc0 = rs.C0
+			lsc0 = ls.C0
+			rhc0 = rh.C0
+			lhc0 = lh.C0
+			rjc0 = rj.C0
+			nc0 = n.C0
+			gc0 = CFrame.new()
+			orsc0 = rs.C0
+			olsc0 = ls.C0
+			orhc0 = rh.C0
+			olhc0 = lh.C0
+			orjc0 = rj.C0
+			onc0 = n.C0
+			count2 = 100
+			maxcount2=100
+			-----------------------------------------------------------
+			game:GetService("RunService").Heartbeat:Connect(function() -- Speed.
+				if playanother == true then
+					return nil
+				else
+					count2 = count2+1
+					if count2<=maxcount2 then
+						rs.Transform=rs.Transform:Lerp(rsc0,count2/maxcount2)
+						ls.Transform=ls.Transform:Lerp(lsc0,count2/maxcount2)
+						rh.Transform=rh.Transform:Lerp(rhc0,count2/maxcount2)
+						lh.Transform=lh.Transform:Lerp(lhc0,count2/maxcount2)
+						n.Transform=n.Transform:Lerp(nc0,count2/maxcount2)
+						rj.Transform=rj.Transform:Lerp(rjc0,count2/maxcount2)
+					end
+				end
+			end)
+			-----------------------------------------------------------
+			animid=game:GetObjects(animid)[1]
+			anim={}
+			for i,v in pairs(animid:GetChildren()) do
+				if v:IsA("Keyframe") then
+					anim[v.Time]=kftotbl(v)
+				end
+			end
+
+			count = 0
+			char=game:GetService("Players").LocalPlayer.Character
+			if _G.permadeath == true then
+				char = workspace.non
+			end
+						if _G.permadeath == false then
+							hhhh=char.Humanoid.Animator
+			hhhh.Parent = nil
+			end
+			hhhh=char.Humanoid.Animator
+			hhhh.Parent = nil
+			for _,v in pairs(char.Humanoid:GetPlayingAnimationTracks()) do
+				v:Stop()
+			end
+
+			plr.CharacterRemoving:Connect(function()
+				if playing == true then
+					playing = false
+				end
+			end)
+
+			while wait() do
+				if playanother == true then
+					break
+				else
+					for i,oasjdadlasdkadkldjkl in pairs(anim) do
+						asdf=getnext(anim,count)
+						v=anim[asdf]
+						if v["Lg"] then
+							lhc0 = v["Lg"]
+						end
+						if v["Rg"] then
+							rhc0 = v["Rg"]
+						end
+						if v["Lm"] then
+							lsc0 = v["Lm"]
+						end
+						if v["Rm"] then
+							rsc0 = v["Rm"]
+						end
+						if v["To"] then
+							rjc0 = v["To"]
+						end
+						if v["Hd"] then
+							nc0 = v["Hd"]
+						end
+						count2=0
+						maxcount2=asdf-count
+						count=asdf
+						wait(asdf-count)
+						count2=maxcount2
+						if v["Lg"] then
+							char.Torso["Left Hip"].Transform = v["Lg"]
+						end
+						if v["Rg"] then
+							char.Torso["Right Hip"].Transform = v["Rg"]
+						end
+						if v["Lm"] then
+							char.Torso["Left Shoulder"].Transform = v["Lm"]
+						end
+						if v["Rm"] then
+							char.Torso["Right Shoulder"].Transform = v["Rm"]
+						end
+						if v["To"] then
+							char.HumanoidRootPart["RootJoint"].Transform = v["To"]
+						end
+						if v["Hd"] then
+							char.Torso["Neck"].Transform = v["Hd"]
+						end
+					end
+				end
+			end
+		--end)
+
+end
+end)
+
+-------------
